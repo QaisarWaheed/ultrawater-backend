@@ -1,13 +1,8 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable prettier/prettier */
-import { Injectable, BadRequestException, Inject, Scope } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { JournalVoucher } from '../../entities/journal-voucher/journal-voucher';
 import { CreateJournalVoucherDto } from '../../dtos/create-journal-voucher/create-journal-voucher.dto';
-import { REQUEST } from '@nestjs/core';
 
 function parseMMDDYYYY(dateStr?: string): Date | undefined {
   if (!dateStr) return undefined;
@@ -20,68 +15,99 @@ function parseMMDDYYYY(dateStr?: string): Date | undefined {
   return new Date(`${year}-${paddedMonth}-${paddedDay}`);
 }
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class JournalvoucherService {
   constructor(
-    @Inject(REQUEST) private readonly req: any,
-    @InjectModel(JournalVoucher.name, 'test')
-    private journalVoucherModel: Model<JournalVoucher>,
-    @InjectModel(JournalVoucher.name, 'hydroworx')
-    private journalVoucherModel2: Model<JournalVoucher>,
+    @InjectModel(JournalVoucher.name, 'ultrawater') private journalVoucherModel: Model<JournalVoucher>,
   ) {}
 
-  private getModel(): Model<JournalVoucher> {
-    const brand = this.req['brand'] || 'test';
-    return brand === 'hydroworx'
-      ? this.journalVoucherModel2
-      : this.journalVoucherModel;
-  }
-
-  async create(
-    createJournalVoucherDto:
-      | CreateJournalVoucherDto
-      | CreateJournalVoucherDto[],
-  ) {
-    const model = this.getModel();
+  async create(createJournalVoucherDto: CreateJournalVoucherDto | CreateJournalVoucherDto[]) {
     if (Array.isArray(createJournalVoucherDto)) {
-      // Insert multiple documents in a single operation
-      const newEntry = await model.insertMany(createJournalVoucherDto);
-
-      return newEntry;
+      return await this.journalVoucherModel.insertMany(createJournalVoucherDto);
+    } else {
+      const created = new this.journalVoucherModel(createJournalVoucherDto);
+      return await created.save();
     }
-    const newEntry = await model.create(createJournalVoucherDto);
-    return newEntry;
   }
 
-  async findAll(filters?: { startDate?: string; endDate?: string }) {
-    const model = this.getModel();
+  async findAll(filters?: {
+    startDate?: string;
+    endDate?: string;
+  }) {
+    let query: any = {};
+
+    if (filters?.startDate || filters?.endDate) {
+      query.date = {};
+      if (filters.startDate) {
+        query.date.$gte = parseMMDDYYYY(filters.startDate);
+      }
+      if (filters.endDate) {
+        query.date.$lte = parseMMDDYYYY(filters.endDate);
+      }
+    }
+
+    return await this.journalVoucherModel.find(query).exec();
+  }
+
+  async findOne(id: string): Promise<JournalVoucher | null> {
+    return this.journalVoucherModel.findById(id).exec();
+  }
+
+  async findByVoucherNumber(voucherNumber: string): Promise<JournalVoucher[]> {
+    return this.journalVoucherModel.find({ voucherNumber }).exec();
+  }
+
+  async update(id: string, updateJournalVoucherDto: CreateJournalVoucherDto): Promise<JournalVoucher | null> {
+    return this.journalVoucherModel.findByIdAndUpdate(id, updateJournalVoucherDto, { new: true }).exec();
+  }
+
+  async remove(id: string): Promise<JournalVoucher | null> {
+    return this.journalVoucherModel.findByIdAndDelete(id).exec();
+  }
+
+  async getJournalVouchersByDateRange(
+    startDate?: string,
+    endDate?: string,
+  ): Promise<JournalVoucher[]> {
+    const start = startDate ? parseMMDDYYYY(startDate) : undefined;
+    const end = endDate ? parseMMDDYYYY(endDate) : undefined;
+
     const query: any = {};
-    let startDate: Date | undefined;
-    let endDate: Date | undefined;
+    if (start || end) {
+      query.date = {};
+      if (start) query.date.$gte = start;
+      if (end) query.date.$lte = end;
+    }
 
-    if (filters?.startDate) {
-      startDate = parseMMDDYYYY(filters.startDate);
-      if (!startDate) throw new BadRequestException('Invalid start date');
-      startDate.setHours(0, 0, 0, 0);
-    }
-    if (filters?.endDate) {
-      endDate = parseMMDDYYYY(filters.endDate);
-      if (!endDate) throw new BadRequestException('Invalid end date');
-      endDate.setHours(23, 59, 59, 999);
-    }
-    if (startDate && endDate) {
-      query.date = { $gte: startDate, $lte: endDate };
-    } else if (startDate) {
-      query.date = { $gte: startDate };
-    } else if (endDate) {
-      query.date = { $lte: endDate };
-    }
-    // use .lean() so we return plain JS objects with all stored fields
-    return await model.find(query).lean().exec();
+    return this.journalVoucherModel.find(query).exec();
   }
 
-  async findByVoucherNumber(voucherNumber: string) {
-    const model = this.getModel();
-    return await model.findOne({ voucherNumber }).lean().exec();
+  async getJournalVoucherSummary(
+    startDate?: string,
+    endDate?: string,
+  ): Promise<{
+    totalDebit: number;
+    totalCredit: number;
+    transactions: JournalVoucher[];
+  }> {
+    const transactions = await this.getJournalVouchersByDateRange(startDate, endDate);
+
+    const summary = transactions.reduce(
+      (acc, transaction) => {
+        if (transaction.debit) {
+          acc.totalDebit += transaction.debit;
+        }
+        if (transaction.credit) {
+          acc.totalCredit += transaction.credit;
+        }
+        return acc;
+      },
+      { totalDebit: 0, totalCredit: 0 },
+    );
+
+    return {
+      ...summary,
+      transactions,
+    };
   }
 }

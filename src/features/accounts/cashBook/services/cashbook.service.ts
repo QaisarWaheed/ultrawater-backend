@@ -1,9 +1,8 @@
-import { Injectable, BadRequestException, Inject, Scope } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Cashbook, EntryType } from '../entities/cashbook.entity';
 import { CreateCashbookDto } from '../dtos/CreateCashbook.dto';
-import { REQUEST } from '@nestjs/core';
 
 function parseMMDDYYYY(dateStr?: string): Date | undefined {
   if (!dateStr) return undefined;
@@ -16,38 +15,26 @@ function parseMMDDYYYY(dateStr?: string): Date | undefined {
   return new Date(`${year}-${paddedMonth}-${paddedDay}`);
 }
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class CashbookService {
   constructor(
-    @Inject(REQUEST) private readonly req: any,
-    @InjectModel(Cashbook.name, 'test') private cashbookModel: Model<Cashbook>,
-    @InjectModel(Cashbook.name, 'hydroworx') private cashbookModel2: Model<Cashbook>,
+    @InjectModel(Cashbook.name, 'ultrawater') private cashbookModel: Model<Cashbook>,
   ) {}
-      
-      
-
-       private getModel(): Model<Cashbook> {
-        const brand = this.req['brand'] || 'test';
-        return brand === 'hydroworx' ? this.cashbookModel2 : this.cashbookModel;
-      }
-    
 
   async create(createCashbookDto: CreateCashbookDto) {
-    const cashbookModel = this.getModel();
-    return await cashbookModel.create(createCashbookDto);
+    const created = new this.cashbookModel(createCashbookDto);
+    return await created.save();
   }
 
   async getAllcashBookEntries() {
-    const cashbookModel = this.getModel();
-    return await cashbookModel.find().exec();
+    return await this.cashbookModel.find().exec();
   }
 
   async getTotalAmount(amount: number) {
-    const cashbookModel = this.getModel();
     if (isNaN(amount) || amount < 0) {
       throw new BadRequestException('Amount must be a positive number');
     }
-    const result = await cashbookModel.findOne({ amount }).exec();
+    const result = await this.cashbookModel.findOne({ amount }).exec();
     if (!result) {
       throw new BadRequestException('Cashbook entry not found');
     }
@@ -59,32 +46,81 @@ export class CashbookService {
     startDate?: string;
     endDate?: string;
   }) {
-    const cashbookModel = this.getModel();
+    let query: any = {};
+    
+    if (filters?.entryType) {
+      query.entryType = filters.entryType;
+    }
+
+    if (filters?.startDate || filters?.endDate) {
+      query.date = {};
+      if (filters.startDate) {
+        query.date.$gte = parseMMDDYYYY(filters.startDate);
+      }
+      if (filters.endDate) {
+        query.date.$lte = parseMMDDYYYY(filters.endDate);
+      }
+    }
+
+    return await this.cashbookModel.find(query).exec();
+  }
+
+  async findOne(id: string): Promise<Cashbook | null> {
+    return this.cashbookModel.findById(id).exec();
+  }
+
+  async update(id: string, updateCashbookDto: CreateCashbookDto): Promise<Cashbook | null> {
+    return this.cashbookModel.findByIdAndUpdate(id, updateCashbookDto, { new: true }).exec();
+  }
+
+  async remove(id: string): Promise<Cashbook | null> {
+    return this.cashbookModel.findByIdAndDelete(id).exec();
+  }
+
+  async getCashbookByDateRange(
+    startDate?: string,
+    endDate?: string,
+  ): Promise<Cashbook[]> {
+    const start = startDate ? parseMMDDYYYY(startDate) : undefined;
+    const end = endDate ? parseMMDDYYYY(endDate) : undefined;
+
     const query: any = {};
-    if (filters?.entryType) query.entryType = filters.entryType;
-
-    let startDate: Date | undefined;
-    let endDate: Date | undefined;
-
-    if (filters?.startDate) {
-      
-      startDate = parseMMDDYYYY(filters.startDate);
-      if (!startDate) throw new BadRequestException('Invalid start date');
-      startDate.setHours(0, 0, 0, 0); // Start of day
-    }
-    if (filters?.endDate) {
-      endDate = parseMMDDYYYY(filters.endDate);
-      if (!endDate) throw new BadRequestException('Invalid end date');
-      endDate.setHours(23, 59, 59, 999); // End of day
+    if (start || end) {
+      query.date = {};
+      if (start) query.date.$gte = start;
+      if (end) query.date.$lte = end;
     }
 
-    if (startDate && endDate) {
-      query.date = { $gte: startDate, $lte: endDate };
-    } else if (startDate) {
-      query.date = { $gte: startDate };
-    } else if (endDate) {
-      query.date = { $lte: endDate };
-    }
-    return await cashbookModel.find(query).exec();
+    return this.cashbookModel.find(query).exec();
+  }
+
+  async getCashbookSummary(
+    startDate?: string,
+    endDate?: string,
+  ): Promise<{
+    totalCashIn: number;
+    totalCashOut: number;
+    netCashFlow: number;
+    transactions: Cashbook[];
+  }> {
+    const transactions = await this.getCashbookByDateRange(startDate, endDate);
+
+    const summary = transactions.reduce(
+      (acc, transaction) => {
+        if (transaction.entryType === 'cashReciept') {
+          acc.totalCashIn += transaction.amount;
+        } else if (transaction.entryType === 'cashPayment') {
+          acc.totalCashOut += transaction.amount;
+        }
+        return acc;
+      },
+      { totalCashIn: 0, totalCashOut: 0 },
+    );
+
+    return {
+      ...summary,
+      netCashFlow: summary.totalCashIn - summary.totalCashOut,
+      transactions,
+    };
   }
 }

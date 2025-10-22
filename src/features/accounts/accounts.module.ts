@@ -10,6 +10,7 @@ import {
 } from './journalVoucher/entities/journal-voucher/journal-voucher';
 import { JournalvoucherService } from './journalVoucher/services/journalvoucher/journalvoucher.service';
 import { JournalVoucherController } from './journalVoucher/journal-voucher/journal-voucher.controller';
+
 @Module({
   imports: [
     MongooseModule.forFeature(
@@ -17,14 +18,7 @@ import { JournalVoucherController } from './journalVoucher/journal-voucher/journ
         { name: Cashbook.name, schema: CashbookSchema },
         { name: JournalVoucher.name, schema: JournalVoucherSchema },
       ],
-      'test',
-    ),
-    MongooseModule.forFeature(
-      [
-        { name: Cashbook.name, schema: CashbookSchema },
-        { name: JournalVoucher.name, schema: JournalVoucherSchema },
-      ],
-      'hydroworx',
+      'ultrawater',
     ),
   ],
   controllers: [CashbookController, JournalVoucherController],

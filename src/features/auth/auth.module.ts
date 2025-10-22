@@ -6,8 +6,7 @@ import UserSchema, { UserEntity } from './entities/User.entity';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema }], 'test'),
-    MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema }], 'hydroworx'),
+    MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema }], 'ultrawater'),
   ],
   controllers: [AuthController],
   providers: [AuthService],
