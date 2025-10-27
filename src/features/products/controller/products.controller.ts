@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+/* eslint-disable prettier/prettier */
+>>>>>>> cda7cab0ae0bd93df06b5ec87f7dbcd23ae2c50a
 import {
   Body,
   Controller,

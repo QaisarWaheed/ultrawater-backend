@@ -1,42 +1,34 @@
 import { ApiProperty } from '@nestjs/swagger';
-import type { Category, Unit } from '../entities/Product.entity';
+import type { Color, Unit } from '../entities/Product.entity';
 
+// category will now be the Category document id (string)
 export class CreateProductDto {
+  // itemCode is generated automatically; clients should not provide it
+  itemCode?: string;
+
   @ApiProperty()
   itemName: string;
 
-  @ApiProperty()
-  category: Category;
-
-  @ApiProperty()
-  brand: string;
+  @ApiProperty({ description: 'Category id (ObjectId string)' })
+  category: string;
 
   @ApiProperty()
   thickness: number;
 
   @ApiProperty()
-  length: number;
-
-  @ApiProperty()
   unit: Unit;
-
-  @ApiProperty()
-  purchaseRate: number;
 
   @ApiProperty()
   salesRate: number;
 
   @ApiProperty()
-  oldPrice: number;
-
-  @ApiProperty()
-  newPrice: number;
+  color: Color;
 
   @ApiProperty()
   openingStock: number;
 
   @ApiProperty()
-  minimumStock: number;
+  minimumStockLevel: number;
 
   @ApiProperty()
   description: string;
