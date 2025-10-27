@@ -19,24 +19,11 @@ export class CategoryController {
 
   @Post()
   async createCategory(@Body() data: CreateCategoryDto) {
-    // ensure prefix is normalized server-side
-    const prefix = String(data.name || 'CAT')
-      .toUpperCase()
-      .replace(/[^A-Z0-9]/g, '')
-      .slice(0, 8);
-
-    const payload = {
-      name: data.name,
-      prefix,
-      seq: 0,
-    };
-
-    return this.categoryService.create(payload as any);
+    return this.categoryService.create(data);
   }
 
   @Get()
   async getAll() {
-    console.log('test');
     return this.categoryService.findAll();
   }
 
@@ -47,15 +34,7 @@ export class CategoryController {
 
   @Put('/:id')
   async update(@Param('id') id: string, @Body() data: UpdateCategoryDto) {
-    const payload: any = {};
-    if (data.name) payload.name = data.name;
-    if (data.prefix)
-      payload.prefix = String(data.prefix)
-        .toUpperCase()
-        .replace(/[^A-Z0-9]/g, '')
-        .slice(0, 8);
-
-    return this.categoryService.update(id, payload);
+    return this.categoryService.update(id, data);
   }
 
   @Delete('/:id')

@@ -22,13 +22,8 @@ export class CategoryService {
     return this.categoryModel.findById(id).exec();
   }
 
-  async update(
-    id: string,
-    payload: Partial<Category>,
-  ): Promise<Category | null> {
-    return this.categoryModel
-      .findByIdAndUpdate(id, payload as any, { new: true })
-      .exec();
+  async update(id: string, data: Partial<Category>): Promise<Category | null> {
+    return this.categoryModel.findByIdAndUpdate(id, data, { new: true }).exec();
   }
 
   async delete(id: string): Promise<Category | null> {
