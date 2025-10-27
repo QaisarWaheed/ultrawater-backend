@@ -20,13 +20,21 @@ export class CreateSalesInvoiceDto{
    products: Product[]
    
    @ApiProperty()
-   customer:Customer
+    customerName: string;
 
     @ApiProperty({required:true})
     remarks: string;
 
+    @ApiProperty()
+    length:number
 
+@ApiProperty()
+    discount:number
+
+
+    
     subTotal:number
+
 
     totalGrossAmmount:number
 

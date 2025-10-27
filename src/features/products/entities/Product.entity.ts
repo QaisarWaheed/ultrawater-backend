@@ -1,8 +1,8 @@
+/* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose from 'mongoose';
 
-export type Category = mongoose.Types.ObjectId | string;
 
 export type Unit = 'ft' | 'pcs' | 'kg' | 'm' | 'sqft';
 
@@ -17,26 +17,16 @@ export type Color =
 export class Product {
   declare _id: mongoose.Types.ObjectId;
 
-  @ApiProperty()
-  @Prop({ required: true, unique: true })
-  itemCode: string;
+ 
 
   @ApiProperty()
   @Prop({ required: true })
   itemName: string;
 
-  // Reference to dynamic Category collection
   @ApiProperty({ type: String })
-  @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
-    required: true,
-  })
-  category: Category;
+  @Prop({required: true})
+  category: string;
 
-  @ApiProperty()
-  @Prop()
-  brand: string;
 
   @ApiProperty()
   @Prop()
@@ -55,19 +45,9 @@ export class Product {
 
   @ApiProperty()
   @Prop()
-  purchaseRate: number;
-
-  @ApiProperty()
-  @Prop()
   salesRate: number;
 
-  @ApiProperty()
-  @Prop()
-  oldPrice: number;
-
-  @ApiProperty()
-  @Prop()
-  newPrice: number;
+@Prop()
 
   @ApiProperty()
   @Prop()

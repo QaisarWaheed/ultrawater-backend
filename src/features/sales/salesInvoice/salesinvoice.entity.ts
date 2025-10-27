@@ -3,17 +3,17 @@ import mongoose from 'mongoose';
 import { Product } from 'src/features/products/entities/Product.entity';
 import { Customer } from "../customer/entities/customer.entity";
 
-export type paymentMethodType = 'Cash'| 'Card' | 'Cheque' | 'Credit';
+export type paymentMethodType = 'Cash'| 'Card';
 
 @Schema({timestamps:true})
 export class SalesInvoice{
 
     declare _id: mongoose.Types.ObjectId;
 
-    @Prop({required:true})
+    @Prop()
     invoiveNumber: number;
 
-    @Prop({required:true})
+    @Prop()
     invoiveDate: Date;
 
 
@@ -21,15 +21,24 @@ export class SalesInvoice{
     paymentMethod: paymentMethodType
 
 
-   @Prop({required:true})
+   @Prop()
    products: Product[]
    
    @Prop()
-   customer:Customer
+   customerName: string;
 
-    @Prop({required:true})
+    @Prop()
     remarks: string;
 
+
+    @Prop()
+    length:number
+
+    @Prop()
+    discount:number
+
+    @Prop()
+    amount:number
 
     @Prop()
     subTotal:number
