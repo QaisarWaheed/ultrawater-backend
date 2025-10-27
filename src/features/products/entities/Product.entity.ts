@@ -1,77 +1,89 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { ApiProperty } from "@nestjs/swagger";
-import mongoose, { mongo } from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
+import mongoose from 'mongoose';
 
-
-
-export type Category = 'Sections' | 'Channels' | 'Accessories' | 'Glass';
+export type Category = mongoose.Types.ObjectId | string;
 
 export type Unit = 'ft' | 'pcs' | 'kg' | 'm' | 'sqft';
 
-@Schema({timestamps: true})
-export class Product{
+export type Color =
+  | 'DULL'
+  | 'H23/PC‐RAL'
+  | 'SAHRA/BRN'
+  | 'BLACK/MULTI'
+  | 'WOODCOAT';
 
-    declare _id: mongoose.Types.ObjectId;
- 
-    @ApiProperty()
-    @Prop()
-    itemCode: string;
+@Schema({ timestamps: true })
+export class Product {
+  declare _id: mongoose.Types.ObjectId;
 
-    @ApiProperty()
-    @Prop()
-    itemName: string;
+  @ApiProperty()
+  @Prop({ required: true, unique: true })
+  itemCode: string;
 
-    @ApiProperty()
-    @Prop({ enum: ['Sections', 'Channels', 'Accessories', 'Glass'] })
-    category: Category;
+  @ApiProperty()
+  @Prop({ required: true })
+  itemName: string;
 
-    @ApiProperty()
-    @Prop()
-    brand: string;
+  // Reference to dynamic Category collection
+  @ApiProperty({ type: String })
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true,
+  })
+  category: Category;
 
-    @ApiProperty()
-    @Prop()
-    thickness: number;
+  @ApiProperty()
+  @Prop()
+  brand: string;
 
-    @ApiProperty()
-    @Prop()
-    length: number;
+  @ApiProperty()
+  @Prop()
+  thickness: number;
 
-    @ApiProperty()
-    @Prop({ enum: ['ft', 'pcs', 'kg', 'm', 'sqft'] })
-    unit: Unit;
+  @ApiProperty()
+  @Prop()
+  length: number;
 
-    @ApiProperty()
-    @Prop()
-    purchaseRate: number;
+  @ApiProperty()
+  @Prop({ enum: ['ft', 'pcs', 'kg', 'm', 'sqft'] })
+  unit: Unit;
 
-    @ApiProperty()
-    @Prop()
-    salesRate: number;
+  @Prop()
+  color: Color;
 
-    @ApiProperty()
-    @Prop()
-    oldPrice: number;
+  @ApiProperty()
+  @Prop()
+  purchaseRate: number;
 
-    @ApiProperty()
-    @Prop()
-    newPrice: number;
+  @ApiProperty()
+  @Prop()
+  salesRate: number;
 
-    @ApiProperty()
-    @Prop()
-    openingStock: number;
+  @ApiProperty()
+  @Prop()
+  oldPrice: number;
 
-    @ApiProperty()
-    @Prop()
-    minimumStock: number;
+  @ApiProperty()
+  @Prop()
+  newPrice: number;
 
-    @ApiProperty()
-    @Prop()
-    description: string;
+  @ApiProperty()
+  @Prop()
+  openingStock: number;
 
-    declare createdAt: Date;
+  @ApiProperty()
+  @Prop()
+  minimumStock: number;
 
-    declare updatedAt: Date;
+  @ApiProperty()
+  @Prop()
+  description: string;
+
+  declare createdAt: Date;
+
+  declare updatedAt: Date;
 }
 
 const productSchema = SchemaFactory.createForClass(Product);

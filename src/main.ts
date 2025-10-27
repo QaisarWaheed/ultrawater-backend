@@ -3,12 +3,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-
-  
-
   const app = await NestFactory.create(AppModule);
-  
- const config = new DocumentBuilder()
+
+  const config = new DocumentBuilder()
     .setTitle('Pos Inventory API')
     .setDescription('The pos-inventory API description')
     .setVersion('1.0')
@@ -17,10 +14,9 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
-
   app.enableCors({
     global: true,
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:5173',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
