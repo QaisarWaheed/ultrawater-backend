@@ -6,16 +6,15 @@ export class CreateQuotationDto {
   @ApiProperty({ required: true })
   quotationDate: Date;
 
-  @ApiProperty({ required: true })
-  validUntil: Date;
+ 
 
   @ApiProperty({ required: true })
   products: Product[];
 
   @ApiProperty()
-  customer: Customer;
+  customer: string;
 
-  @ApiProperty({ required: true })
+  @ApiProperty()
   remarks: string;
 
   subTotal: number;
@@ -25,4 +24,7 @@ export class CreateQuotationDto {
   totalDiscount: number;
 
   totalNetAmmount: number;
+
+  discount:number
+
 }

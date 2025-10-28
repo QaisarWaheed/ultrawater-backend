@@ -9,22 +9,19 @@ export type paymentMethodType = 'Cash' | 'Card' | 'Cheque' | 'Credit';
 export class Quotation {
   declare _id: mongoose.Types.ObjectId;
 
-  @Prop({ required: true })
-  quotationNumber: number;
 
   @Prop({ required: true })
   quotationDate: Date;
 
-  @Prop()
-  validUntil: Date;
+ 
 
   @Prop({ required: true })
   products: Product[];
 
   @Prop()
-  customer: Customer;
+  customer: string;
 
-  @Prop({ required: true })
+  @Prop()
   remarks: string;
 
   @Prop()
@@ -34,10 +31,16 @@ export class Quotation {
   totalGrossAmmount: number;
 
   @Prop()
+  discount: number;
+
+  @Prop()
   totalDiscount: number;
 
   @Prop()
   totalNetAmmount: number;
+
+  @Prop()
+  length:string
 
   declare createdAt: Date;
 

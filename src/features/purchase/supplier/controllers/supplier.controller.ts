@@ -1,7 +1,8 @@
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { CreateSupplierDto } from '../supplier.dto';
 import { SupplierService } from './../services/supplier.service';
-import { Body, Controller, Delete, Get,  Param, Post, Put } from '@nestjs/common';
-
+import { Body, Controller, Delete, Get,  Param, Patch, Post, Put } from '@nestjs/common';
+@ApiTags("supplier")
 @Controller('supplier')
 export class SupplierController {
 
@@ -25,8 +26,9 @@ export class SupplierController {
     }
 
    
-
-    @Put('updateSupplier/:id')
+    
+     @ApiBody({ type: CreateSupplierDto }) 
+    @Patch('updateSupplier/:id')
     async updateSupplier(@Param('id') id:string, @Body() data:Partial<CreateSupplierDto>){
        return await this.supplierService.updateSupplier(id, data)
     }

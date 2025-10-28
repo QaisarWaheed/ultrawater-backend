@@ -29,7 +29,7 @@ async create(data:CreateSupplierDto):Promise<Supplier | null>{
     return newSupplier
 }
 
-async updateSupplier(id:string, data:Partial<CreateSupplierDto>):Promise<Supplier | null>{
+async updateSupplier(id:string, data:Partial<CreateSupplierDto>):Promise<Supplier>{
     const updatedSupplier = await this.supplierModel.findByIdAndUpdate(id, data, {new:true})
     if(!updatedSupplier){
         throw new NotFoundException('no supplier found');

@@ -3,42 +3,41 @@ import { ApiProperty } from "@nestjs/swagger";
 import mongoose, { mongo } from "mongoose";
 import type { paymentMethodType } from "../sales/salesInvoice/salesinvoice.entity";
 
-export type categoryType = 'Rent' | 'utilities' | 'Transportation' | 'Salary' | 'Stationery' | 'Misc';
-@Schema({timestamps:true})
-export class Expense{
+@Schema({ timestamps: true })
+export class Expense {
 
     declare _id: mongoose.Types.ObjectId;
 
-    @Prop({required:true})
+    @Prop({ required: true })
     expenseNumber: string;
 
-    @Prop({required:true})
+    @Prop({ required: true })
     date: Date;
 
-    @Prop({required:true})
+    @Prop({ required: true })
     description: string;
 
-    @Prop({required:true})
+    @Prop({ required: true })
     amount: number;
 
-    @Prop({required:true})
+    @Prop({ required: true })
     paymentMethod: paymentMethodType;
 
-    @Prop({required:true})
+    @Prop({ required: true })
     reference: string;
 
-    @Prop({required:true})
+    @Prop({ required: true })
     remarks: string;
 
-    @Prop({required:true})
-    categoryType: categoryType;
+    @Prop({ required: true })
+    categoryType: string;
 
     declare createdAt: Date;
 
     declare updatedAt: Date;
-    
+
 
 }
 const expenseSchema = SchemaFactory.createForClass(Expense);
 
-export  default expenseSchema;
+export default expenseSchema;

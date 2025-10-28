@@ -4,6 +4,11 @@ import type { paymentMethodType } from './salesReturn.entity';
 import { Customer } from '../customer/entities/customer.entity';
 
 export class CreateSalesReturnDto {
+
+ @ApiProperty()
+ invoiceNumber:number
+
+
  @ApiProperty({required:true})
      invoiveDate: Date;
  

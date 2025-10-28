@@ -12,7 +12,7 @@ export class SalesReturn {
   declare _id: mongoose.Types.ObjectId;
   
       @Prop({required:true})
-      invoiveNumber: number;
+      invoiceNumber: number;
   
       @Prop({required:true})
       invoiveDate: Date;
@@ -28,7 +28,7 @@ export class SalesReturn {
      @Prop()
      customer:Customer
   
-      @Prop({required:true})
+      @Prop()
       remarks: string;
   
   

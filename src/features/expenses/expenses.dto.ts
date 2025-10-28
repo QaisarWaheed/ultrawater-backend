@@ -1,12 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
-import type { categoryType } from "./expenses.entity";
 import type { paymentMethodType } from "../sales/salesInvoice/salesinvoice.entity";
 
 
-export class CreateExpensesDto{
+export class CreateExpensesDto {
 
 
-    
+    @ApiProperty()
     expenseNumber: string;
 
     @ApiProperty()
@@ -28,7 +27,7 @@ export class CreateExpensesDto{
     remarks: string;
 
     @ApiProperty()
-    categoryType: categoryType;
+    categoryType: string;
 
 
 
