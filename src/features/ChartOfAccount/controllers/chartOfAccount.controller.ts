@@ -27,7 +27,7 @@ export class ChartOfAccountController {
   getSalesAccounts() {
     return this.chartOfAccountService.findSalesAccounts();
   }
-  constructor(private readonly chartOfAccountService: ChartOfAccountService) {}
+  constructor(private readonly chartOfAccountService: ChartOfAccountService) { }
 
   @Post()
   create(@Body() createChartOfAccountDto: CreateChartOfAccountDto) {
@@ -58,15 +58,10 @@ export class ChartOfAccountController {
   @Put('/openingBalance/:id')
   async partialUpdate(
     @Param('id') id: string,
-    @Body() updateOpeningBalanceDto: Partial<UpdateOpeningBalanceDto>,
+    @Body() data: UpdateOpeningBalanceDto,
   ) {
-    console.log(updateOpeningBalanceDto);
-
-    await this.chartOfAccountService.updateOpeningBalance(
-      id,
-      updateOpeningBalanceDto.credit || 0,
-      updateOpeningBalanceDto.debit || 0,
-    );
+    console.log('📥 Received DTO:', data);
+    return this.chartOfAccountService.updateOpeningBalance(id, data);
   }
 
   @Delete(':id')

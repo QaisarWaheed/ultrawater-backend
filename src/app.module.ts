@@ -12,7 +12,7 @@ import { AccountsModule } from './features/accounts/accounts.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGO_URI2 ?? '', {
+    MongooseModule.forRoot("mongodb+srv://isalman23701_db_user:HXsKVncBZroVVPaO@cluster0.qxavhuz.mongodb.net/ultrawater?retryWrites=true&w=majority&appName=Cluster0", {
       connectionName: 'ultrawater',
     }),
     AuthModule,
@@ -25,4 +25,4 @@ import { AccountsModule } from './features/accounts/accounts.module';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }

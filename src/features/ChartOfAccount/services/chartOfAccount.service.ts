@@ -7,6 +7,7 @@ import { Model } from 'mongoose';
 import { ChartOfAccount } from '../entities/chartOfAccount.entity';
 import { CreateChartOfAccountDto } from '../dto/createChartOfAccount.dto';
 import { UpdateChartOfAccountDto } from '../dto/updateChartOfAccount.dto';
+import { UpdateOpeningBalanceDto } from '../dto/updateOpeningBalance.dto';
 
 @Injectable()
 export class ChartOfAccountService {
@@ -26,7 +27,7 @@ export class ChartOfAccountService {
   constructor(
     @InjectModel(ChartOfAccount.name, 'ultrawater')
     private chartOfAccountModel: Model<ChartOfAccount>,
-  ) {}
+  ) { }
 
   async create(createChartOfAccountDto: CreateChartOfAccountDto) {
     const created = new this.chartOfAccountModel(createChartOfAccountDto);
@@ -48,11 +49,33 @@ export class ChartOfAccountService {
       .exec();
   }
 
-  async updateOpeningBalance(id: string, debit: number, credit: number) {
-    return this.chartOfAccountModel
-      .findByIdAndUpdate(id, { debit: debit, credit: credit }, { new: true })
+  async updateOpeningBalance(id: string, updateOpeningBalanceDto: UpdateOpeningBalanceDto) {
+    console.log('Incoming DTO:', updateOpeningBalanceDto);
+
+    // Swap debit ↔ credit to correct reversal issue
+    const swappedPayload: Record<string, number> = {};
+    if (updateOpeningBalanceDto.debit !== undefined) {
+      swappedPayload.credit = updateOpeningBalanceDto.debit || 0;
+    }
+    if (updateOpeningBalanceDto.credit !== undefined) {
+      swappedPayload.debit = updateOpeningBalanceDto.credit || 0;
+    }
+
+    // Only keep defined values
+    const payload = Object.fromEntries(
+      Object.entries(swappedPayload).filter(([_, v]) => v !== undefined)
+    );
+
+    console.log('🧾 Final payload to save:', payload);
+
+    const updated = await this.chartOfAccountModel
+      .findByIdAndUpdate(id, payload, { new: true })
       .exec();
+
+    console.log('✅ Updated document:', updated);
+    return updated;
   }
+
 
   async remove(id: string) {
     const deleted = await this.chartOfAccountModel.findByIdAndDelete(id).exec();

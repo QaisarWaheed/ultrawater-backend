@@ -16,7 +16,7 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('Products')
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(private readonly productsService: ProductsService) { }
 
   @Get()
   async getAllProducts() {
@@ -30,6 +30,7 @@ export class ProductsController {
 
   @Post('create-product')
   async createProduct(@Body() data: CreateProductDto) {
+    console.log("api hit")
     return await this.productsService.createProduct(data);
   }
 

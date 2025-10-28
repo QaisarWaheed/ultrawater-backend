@@ -13,4 +13,4 @@ import { ChartOfAccountService } from './services/chartOfAccount.service';
   controllers: [ChartOfAccountController],
   providers: [ChartOfAccountService],
 })
-export class ChartOfAccountModule {}
+export class ChartOfAccountModule { }
