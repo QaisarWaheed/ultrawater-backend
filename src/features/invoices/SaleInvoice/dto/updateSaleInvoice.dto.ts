@@ -10,13 +10,7 @@ export class UpdateSaleInvoiceDto {
   @IsNotEmpty()
   invoiceDate: Date;
 
-  @ApiProperty({ required: false })
-  @IsOptional()
-  deliveryNumber?: string;
 
-  @ApiProperty({ required: false })
-  @IsOptional()
-  deliveryDate?: Date;
 
   @ApiProperty({ required: false })
   @IsOptional()
@@ -59,7 +53,7 @@ export class UpdateSaleInvoiceDto {
     exGstRate: number;
     exGstAmount: number;
   }>;
-  
+
   @ApiProperty()
   @IsNotEmpty()
   invoiceNumber: string;
