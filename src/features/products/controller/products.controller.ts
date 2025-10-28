@@ -41,3 +41,4 @@ export class ProductsController {
     return this.productService.deleteProduct(id);
   }
 }
+export default ProductsController;

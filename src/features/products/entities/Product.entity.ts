@@ -3,7 +3,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose from 'mongoose';
 
-
 export type Unit = 'ft' | 'pcs' | 'kg' | 'm' | 'sqft';
 
 export type Color =
@@ -17,16 +16,13 @@ export type Color =
 export class Product {
   declare _id: mongoose.Types.ObjectId;
 
- 
-
   @ApiProperty()
   @Prop({ required: true })
   itemName: string;
 
   @ApiProperty({ type: String })
-  @Prop({required: true})
+  @Prop({ required: true })
   category: string;
-
 
   @ApiProperty()
   @Prop()
@@ -47,15 +43,14 @@ export class Product {
   @Prop()
   salesRate: number;
 
-@Prop()
-
+  @Prop()
   @ApiProperty()
   @Prop()
   openingStock: number;
 
   @ApiProperty()
   @Prop()
-  minimumStock: number;
+  minimumStockLevel: number;
 
   @ApiProperty()
   @Prop()

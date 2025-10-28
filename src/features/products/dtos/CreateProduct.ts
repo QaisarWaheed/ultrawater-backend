@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import type { Color, Unit } from '../entities/Product.entity';
 
 export class CreateProductDto {
-
   @ApiProperty()
   itemName: string;
 

@@ -1,34 +1,26 @@
-import { ApiProperty } from "@nestjs/swagger";
-import type { paymentType } from "../entities/customer.entity";
+import { ApiProperty } from '@nestjs/swagger';
+import type { paymentType } from '../entities/customer.entity';
 
 export class CreateCustomerDto {
+  @ApiProperty()
+  name: string;
 
-@ApiProperty()
-name: string;
+  @ApiProperty()
+  phone: string;
 
-@ApiProperty()
-phone: string;
+  @ApiProperty()
+  address: string;
 
-@ApiProperty()
-email: string;
+  @ApiProperty()
+  city: string;
 
-@ApiProperty()
-address: string;
+  @ApiProperty()
+  openingAmount: number;
 
-@ApiProperty()
-city: string;
+  @ApiProperty()
+  creditLimit: number;
 
-@ApiProperty()
-gstNumber: number;
-
-@ApiProperty()
-openingAmount: number;
-
-@ApiProperty()
-creditLimit: number;
-
-@ApiProperty()
-paymentType: paymentType;
-
-
+  @ApiProperty()
+  paymentType: paymentType;
 }
+export default CreateCustomerDto;
