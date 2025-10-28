@@ -16,9 +16,9 @@ import { AccountsModule } from './features/Accounts/accounts.module';
     SalesModule,
     ExpenseModule,
     AccountsModule,
-    MongooseModule.forRoot('mongodb://localhost:27017/Seven-Star'),
+    MongooseModule.forRoot('mongodb+srv://azibaliansari311_db_user:m736vEuu7K9JgOF6@cluster0.nktmmeq.mongodb.net/?appName=Cluster0/Aluminum'),
   ],
   providers: [],
   controllers: [],
 })
-export class AppModule {}
+export class AppModule { }
