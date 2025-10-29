@@ -50,29 +50,31 @@ export class ChartOfAccountService {
   }
 
   async updateOpeningBalance(id: string, updateOpeningBalanceDto: UpdateOpeningBalanceDto) {
-    console.log('Incoming DTO:', updateOpeningBalanceDto);
+    console.log('📥 UPDATE REQUEST ===');
+    console.log('Account ID:', id);
+    console.log('Modal Debit (what user entered):', updateOpeningBalanceDto.debit);
+    console.log('Modal Credit (what user entered):', updateOpeningBalanceDto.credit);
 
-    // Swap debit ↔ credit to correct reversal issue
-    const swappedPayload: Record<string, number> = {};
-    if (updateOpeningBalanceDto.debit !== undefined) {
-      swappedPayload.credit = updateOpeningBalanceDto.debit || 0;
+    // Prepare the payload WITHOUT swapping
+    const payload: Record<string, number> = {};
+
+    // Only update fields that are provided
+    if (updateOpeningBalanceDto.debit !== undefined && updateOpeningBalanceDto.debit !== null) {
+      payload.debit = updateOpeningBalanceDto.debit;
     }
-    if (updateOpeningBalanceDto.credit !== undefined) {
-      swappedPayload.debit = updateOpeningBalanceDto.credit || 0;
+    if (updateOpeningBalanceDto.credit !== undefined && updateOpeningBalanceDto.credit !== null) {
+      payload.credit = updateOpeningBalanceDto.credit;
     }
 
-    // Only keep defined values
-    const payload = Object.fromEntries(
-      Object.entries(swappedPayload).filter(([_, v]) => v !== undefined)
-    );
-
-    console.log('🧾 Final payload to save:', payload);
+    console.log('🧾 Payload being sent to DB:', payload);
 
     const updated = await this.chartOfAccountModel
       .findByIdAndUpdate(id, payload, { new: true })
       .exec();
 
-    console.log('✅ Updated document:', updated);
+    console.log('✅ REFETCH RESPONSE ===');
+    console.log('Full response:', JSON.stringify(updated, null, 2));
+
     return updated;
   }
 
