@@ -6,7 +6,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, Query, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Param, Delete } from '@nestjs/common';
 import { JournalvoucherService } from '../services/journalvoucher/journalvoucher.service';
 import { CreateJournalVoucherDto } from '../dtos/create-journal-voucher/create-journal-voucher.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -15,17 +15,15 @@ import { ApiBody } from '@nestjs/swagger';
 @ApiTags('Journal Voucher')
 @Controller('journal-vouchers')
 export class JournalVoucherController {
-  constructor(private readonly journalVoucherService: JournalvoucherService) {}
+  constructor(private readonly journalVoucherService: JournalvoucherService) { }
 
   @Post()
   @ApiBody({ type: CreateJournalVoucherDto, isArray: true })
   async create(
     @Body() dto: CreateJournalVoucherDto[] | CreateJournalVoucherDto,
   ) {
-    // Log incoming payload
     console.log('Incoming Journal Voucher payload:', JSON.stringify(dto));
 
-    // normalize helper to coerce credit/debit (handle strings and empty values)
     const normalizeEntry = (entry: any) => {
       const normalized: any = { ...entry };
       if (normalized.credit === '' || normalized.credit === null) {
@@ -42,7 +40,6 @@ export class JournalVoucherController {
         normalized.debit = Number.isNaN(n) ? undefined : n;
       }
 
-      // normalize date strings to Date objects when possible
       if (normalized.date && typeof normalized.date === 'string') {
         const parsed = new Date(normalized.date);
         if (!Number.isNaN(parsed.getTime())) normalized.date = parsed;
@@ -51,7 +48,6 @@ export class JournalVoucherController {
       return normalized;
     };
 
-    // prepare payload (single or array) with normalized number fields
     let payload: any = dto;
     if (Array.isArray(dto)) {
       payload = dto.map((d) => normalizeEntry(d));
@@ -61,13 +57,10 @@ export class JournalVoucherController {
 
     console.log('Normalized Journal Voucher payload:', JSON.stringify(payload));
 
-    // Persist and capture saved result
     const saved = await this.journalVoucherService.create(payload as any);
 
-    // Log saved result (includes _id/timestamps when available)
     console.log('Saved Journal Voucher result:', JSON.stringify(saved));
 
-    // Return saved documents to the caller
     return saved;
   }
 
@@ -87,5 +80,11 @@ export class JournalVoucherController {
   @Get(':voucherNumber')
   async findByVoucherNumber(@Param('voucherNumber') voucherNumber: string) {
     return await this.journalVoucherService.findByVoucherNumber(voucherNumber);
+  }
+
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return await this.journalVoucherService.remove(id);
   }
 }

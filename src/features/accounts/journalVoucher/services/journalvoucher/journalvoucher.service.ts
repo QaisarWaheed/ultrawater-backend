@@ -19,7 +19,7 @@ function parseMMDDYYYY(dateStr?: string): Date | undefined {
 export class JournalvoucherService {
   constructor(
     @InjectModel(JournalVoucher.name, 'ultrawater') private journalVoucherModel: Model<JournalVoucher>,
-  ) {}
+  ) { }
 
   async create(createJournalVoucherDto: CreateJournalVoucherDto | CreateJournalVoucherDto[]) {
     if (Array.isArray(createJournalVoucherDto)) {
@@ -110,4 +110,7 @@ export class JournalvoucherService {
       transactions,
     };
   }
+
+
+
 }
