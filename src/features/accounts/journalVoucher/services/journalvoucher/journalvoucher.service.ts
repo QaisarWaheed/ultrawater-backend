@@ -57,12 +57,12 @@ export class JournalvoucherService {
     return this.journalVoucherModel.find({ voucherNumber }).exec();
   }
 
-  async update(id: string, updateJournalVoucherDto: CreateJournalVoucherDto): Promise<JournalVoucher | null> {
-    return this.journalVoucherModel.findByIdAndUpdate(id, updateJournalVoucherDto, { new: true }).exec();
+  async update(voucherNumber: string, updateJournalVoucherDto: CreateJournalVoucherDto): Promise<JournalVoucher | null> {
+    return this.journalVoucherModel.findOneAndUpdate({ voucherNumber }, updateJournalVoucherDto, { new: true }).exec();
   }
 
-  async remove(id: string): Promise<JournalVoucher | null> {
-    return this.journalVoucherModel.findByIdAndDelete(id).exec();
+  async remove(voucherNumber: string): Promise<JournalVoucher | null> {
+    return this.journalVoucherModel.findOneAndDelete({ voucherNumber }).exec();
   }
 
   async getJournalVouchersByDateRange(
