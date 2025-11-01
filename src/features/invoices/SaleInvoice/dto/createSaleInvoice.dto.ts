@@ -2,9 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateSaleInvoiceDto {
-  @ApiProperty()
-  @IsNotEmpty()
-  computerNumber: string;
 
   @ApiProperty()
   @IsNotEmpty()

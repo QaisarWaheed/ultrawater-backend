@@ -16,7 +16,7 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('Sale Invoice')
 @Controller('sale-invoice')
 export class SaleInvoiceController {
-  constructor(private readonly saleInvoiceService: SaleInvoiceService) {}
+  constructor(private readonly saleInvoiceService: SaleInvoiceService) { }
 
   @Post()
   create(@Body() createSaleInvoiceDto: CreateSaleInvoiceDto) {
