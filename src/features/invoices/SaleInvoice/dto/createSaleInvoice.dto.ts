@@ -7,8 +7,6 @@ export class CreateSaleInvoiceDto {
   @IsNotEmpty()
   invoiceDate: Date;
 
-
-
   @ApiProperty({ required: false })
   @IsOptional()
   poNumber?: string;
@@ -19,7 +17,7 @@ export class CreateSaleInvoiceDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  account: string;
+  accountNumber: string;
 
   @ApiProperty()
   @IsNotEmpty()
