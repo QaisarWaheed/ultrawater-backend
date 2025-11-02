@@ -22,14 +22,19 @@ export class CreateQuotationDto {
   @ApiProperty()
   remarks: string;
 
+  @ApiProperty()
   subTotal: number;
 
+  @ApiProperty()
   totalGrossAmount: number;
 
+  @ApiProperty()
   totalDiscount: number;
 
+  @ApiProperty()
   totalNetAmount: number;
 
-  discount: number
+  @ApiProperty()
+  discount: number;
 
 }

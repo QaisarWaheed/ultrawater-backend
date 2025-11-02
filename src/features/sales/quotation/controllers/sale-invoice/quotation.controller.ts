@@ -23,7 +23,14 @@ export class QuotationController {
 
     @Post()
     async createInvoice(@Body() data: CreateQuotationDto) {
-        return await this.quotationService.createInvoice(data)
+        try {
+            return await this.quotationService.createInvoice(data)
+
+        }
+        catch (error) {
+            console.error("Error creating quotation:", error);
+            throw error;
+        }
     }
 
     @Put('/:id')
