@@ -23,6 +23,8 @@ export class QuotationController {
 
     @Post()
     async createInvoice(@Body() data: CreateQuotationDto) {
+        console.log("Creating quotation:", data);
+
         try {
             return await this.quotationService.createInvoice(data)
 
