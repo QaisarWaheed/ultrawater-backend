@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable prettier/prettier */
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,23 +17,17 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
-  // CORS configuration
-  // - In development you can allow all origins by setting ORIGIN_ALLOW_ALL=true
-  // - In production prefer setting CORS_ORIGIN to a comma-separated allowlist
-  const allowAll = process.env.ORIGIN_ALLOW_ALL === 'true';
-  const envOrigins = process.env.CORS_ORIGIN || 'https://pos-and-inventory-bm5u.vercel.app';
-  const allowedOrigins = envOrigins.split(',').map(o => o.trim()).filter(Boolean);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: false, // Temporarily disable transformation
+      whitelist: false, // Temporarily disable whitelist
+      forbidNonWhitelisted: false,
+    }),
+  );
 
   app.enableCors({
-    origin: allowAll ? true : function (origin, callback) {
-      // allow requests with no origin (e.g., curl, mobile apps)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1) {
-        return callback(null, true);
-      }
-      return callback(new Error('Not allowed by CORS'));
-    },
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   });
 
