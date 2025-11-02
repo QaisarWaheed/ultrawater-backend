@@ -1,44 +1,55 @@
-import mongoose, { mongo } from "mongoose";
+/* eslint-disable prettier/prettier */
+import mongoose from "mongoose";
 
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Supplier } from "../../supplier/supplier.entity";
 import { Product } from "src/features/products/entities/Product.entity";
 
-@Schema({timestamps:true})
+@Schema({ timestamps: true })
 export class PurchaseInvoice {
 
-declare _id: mongoose.Types.ObjectId
+    declare _id: mongoose.Types.ObjectId
 
-@Prop()
-invoiceNumber:number
+    @Prop()
+    purchaseInvoiceNumber: string;
 
-@Prop()
-invoiceDate: Date
+    @Prop()
+    invoiceDate: Date
 
-@Prop()
-grnNumber?: number
 
-@Prop()
-supplier: Supplier
 
- @Prop()
- products : Product[]
+    @Prop({ type: Object })
+    supplier: Supplier
 
- @Prop()
- remarks:string
+    @Prop()
+    products: Product[]
 
- @Prop()
- subTotal:number
+    @Prop()
+    remarks: string
 
- @Prop()
- discount:number
+    @Prop()
+    subTotal: number
 
- @Prop()
- total:number
 
- declare createAt:Date
+    @Prop()
+    total: number
 
- declare updatedAt: Date
+    @Prop()
+    totalDiscount: number
+
+    @Prop()
+    discount: number
+    @Prop()
+    totalNetAmount: number
+
+    @Prop()
+    length: number
+
+
+
+    declare createAt: Date
+
+    declare updatedAt: Date
 
 }
 

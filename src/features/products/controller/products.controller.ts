@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Body,
   Controller,
@@ -8,17 +9,20 @@ import {
   Put,
 } from '@nestjs/common';
 import { ProductService } from '../services/product.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { CreateProductDto } from '../dtos/CreateProduct';
+import mongoose from 'mongoose';
 
 @ApiTags('Products')
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService) { }
 
   @Get()
   async getAllProducts() {
-    return this.productService.findAll();
+    const products = await this.productService.findAll();
+    console.log("Fetched all products");
+    return products;
   }
 
   @Get('/:id')
@@ -32,7 +36,7 @@ export class ProductsController {
   }
 
   @Put('/:id')
-  async updateProduct(@Param('id') id: string, @Body() productData: any) {
+  async updateProduct(@Param('id') id: string, @Body() productData: Partial<CreateProductDto>) {
     return this.productService.updateProduct(id, productData);
   }
 

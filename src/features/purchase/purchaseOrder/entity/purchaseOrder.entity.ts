@@ -1,37 +1,39 @@
+/* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
-import { Supplier } from "../../supplier/supplier.entity";
+
 import { Product } from "src/features/products/entities/Product.entity";
+import { Supplier } from "../../supplier/supplier.entity";
 
-@Schema({timestamps:true})
-export class PurchaseOrder{
+@Schema({ timestamps: true })
+export class PurchaseOrder {
 
-declare _id:mongoose.Types.ObjectId
+    declare _id: mongoose.Types.ObjectId
 
-@Prop()
-poNumber:number
+    @Prop()
+    poNumber: string;
 
-@Prop()
-poDate:Date
+    @Prop()
+    poDate: Date
 
-@Prop()
-expectedDelivery:Date
+    @Prop()
+    expectedDelivery: Date
 
-@Prop()
-supplier:Supplier
+    @Prop({ type: Object })
+    supplier: Supplier
 
-@Prop()
-products:Product[]
+    @Prop()
+    products: Product[]
 
-@Prop()
-remarks:string
+    @Prop()
+    remarks: string
 
-subTotal:number
+    subTotal: number
 
-total:number
+    total: number
 
-declare createAt:Date
-declare updatedAt:Date
+    declare createAt: Date
+    declare updatedAt: Date
 
 
 }

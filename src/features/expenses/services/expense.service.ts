@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { BadRequestException, HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Expense } from '../expenses.entity';
 import { Model } from 'mongoose';
@@ -19,9 +20,9 @@ export class ExpenseService {
     }
   }
 
-  async findById(id: string): Promise<Expense | null> {
+  async findById(expenseNumber: string): Promise<Expense | null> {
     try {
-      const expense = await this.expenseModel.findById(id).exec();
+      const expense = await this.expenseModel.findOne({ expenseNumber }).exec();
       if (!expense) {
         throw new HttpException('No Product Found Against this Id', 404);
       }
@@ -44,19 +45,19 @@ export class ExpenseService {
   }
 
   async updateExpense(
-    id: string,
+    expenseNumber: string,
     expense: Partial<CreateExpensesDto>,
   ): Promise<Expense | null> {
     try {
       return await this.expenseModel
-        .findByIdAndUpdate(id, expense, { new: true })
+        .findOneAndUpdate({ expenseNumber }, expense, { new: true })
         .exec();
     } catch (error) {
       throw new Error('Error updating product');
     }
   }
 
-  async deleteExpense(id: string): Promise<Expense | null> {
-    return await this.expenseModel.findByIdAndDelete(id).exec();
+  async deleteExpense(expenseNumber: string): Promise<Expense | null> {
+    return await this.expenseModel.findOneAndDelete({ expenseNumber }).exec();
   }
 }

@@ -1,45 +1,49 @@
+/* eslint-disable prettier/prettier */
 import { ApiProperty } from "@nestjs/swagger";
 import { Product } from "src/features/products/entities/Product.entity";
 import type { paymentMethodType } from "./salesinvoice.entity";
 import { Customer } from "../customer/entities/customer.entity";
 
+export class CreateSalesInvoiceDto {
+    @ApiProperty()
+    invoiceNumber: string;
 
+    @ApiProperty({ type: String, format: 'date-time' })
+    invoiceDate: Date;
 
+    @ApiProperty({ enum: ['Cash', 'Card'], description: 'Payment method used' })
+    paymentMethod: paymentMethodType;
 
+    @ApiProperty({
+        type: [Object],
+        description: 'Array of product objects sold in this invoice'
+    })
+    items: Product[];
 
-export class CreateSalesInvoiceDto{
-@ApiProperty({required:true})
-    invoiveDate: Date;
-
+    @ApiProperty({ type: [Object], description: 'Array of customer objects' })
+    customer: Customer;
 
     @ApiProperty()
-    paymentMethod: paymentMethodType
-
-
-   @ApiProperty({required:true})
-   products: Product[]
-   
-   @ApiProperty()
-    customerName: string;
-
-    @ApiProperty({required:true})
-    remarks: string;
+    remarks?: string;
 
     @ApiProperty()
-    length:number
+    length: number;
 
-@ApiProperty()
-    discount:number
+    @ApiProperty()
+    discount: number;
 
+    @ApiProperty()
+    subTotal: number;
 
-    
-    subTotal:number
+    @ApiProperty()
+    amount: number;
 
+    @ApiProperty()
+    totalGrossAmount: number;
 
-    totalGrossAmmount:number
+    @ApiProperty()
+    totalDiscountAmount: number;
 
-    totalDiscount:number
-
-    totalNetAmmount:number
-
+    @ApiProperty()
+    totalNetAmount: number;
 }

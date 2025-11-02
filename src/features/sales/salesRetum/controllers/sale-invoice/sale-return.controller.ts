@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { SalesReturnService } from '../../services/sale-invoice/sale-retrun.service';
@@ -8,32 +9,32 @@ import { CreateSalesReturnDto } from '../../salesReturn.dto';
 export class SalesReturnController {
 
 
-constructor(private readonly salesReturnService : SalesReturnService){}
+    constructor(private readonly salesReturnService: SalesReturnService) { }
 
 
-@Get()
-async findAll(){
-    return await this.salesReturnService.findAll()
-}
+    @Get()
+    async findAll() {
+        return await this.salesReturnService.findAll()
+    }
 
-@Get('/:id')
-async findById(@Param('id') id:string){
-    return await this.salesReturnService.findById(id)
-}
+    @Get('/:invoiceNumber')
+    async findByInvoiceNumber(@Param('invoiceNumber') invoiceNumber: string) {
+        return await this.salesReturnService.findByInvoiceNumber(invoiceNumber)
+    }
 
-@Post()
-async createInvoice(@Body() data:CreateSalesReturnDto){
-    return await this.salesReturnService.createInvoice(data)
-}
+    @Post()
+    async createInvoice(@Body() data: CreateSalesReturnDto) {
+        return await this.salesReturnService.createInvoice(data)
+    }
 
-@Put('/:id')
-async updateInvoice(@Param('id') id:string, @Body() data:CreateSalesReturnDto){
-    return await this.salesReturnService.updateInvoice(id, data)
-}
+    @Put('/:invoiceNumber')
+    async updateInvoice(@Param('invoiceNumber') invoiceNumber: string, @Body() data: CreateSalesReturnDto) {
+        return await this.salesReturnService.updateInvoice(invoiceNumber, data)
+    }
 
-@Delete('/:id')
-async deleteInvoice(@Param('id') id:string){
-    return await this.salesReturnService.deleteInvoice(id)
-}
+    @Delete('/:invoiceNumber')
+    async deleteInvoice(@Param('invoiceNumber') invoiceNumber: string) {
+        return await this.salesReturnService.deleteInvoice(invoiceNumber)
+    }
 
 }

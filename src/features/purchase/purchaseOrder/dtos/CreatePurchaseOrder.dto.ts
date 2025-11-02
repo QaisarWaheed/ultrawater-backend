@@ -1,27 +1,30 @@
+/* eslint-disable prettier/prettier */
 import { ApiProperty } from "@nestjs/swagger"
-import { Supplier } from "../../supplier/supplier.entity"
+
 import { Product } from "src/features/products/entities/Product.entity"
 
-export class CreatePurchaseOrderDto{
-    
-    poNumber:number
-    
+import { Supplier } from "../../supplier/supplier.entity";
+
+export class CreatePurchaseOrderDto {
+
+    poNumber: string;
+
     @ApiProperty()
-    poDate:Date
-    
+    poDate: Date;
+
     @ApiProperty()
-    expectedDelivery:Date
-    
+    expectedDelivery: Date
+
+    @ApiProperty({ type: Object })
+    supplier: Supplier
+
     @ApiProperty()
-    supplier:Supplier
-    
+    products: Product[]
+
     @ApiProperty()
-    products:Product[]
-    
-    @ApiProperty()
-    remarks:string
-    
-    subTotal:number
-    
-    total:number
+    remarks: string
+
+    subTotal: number
+
+    total: number
 }

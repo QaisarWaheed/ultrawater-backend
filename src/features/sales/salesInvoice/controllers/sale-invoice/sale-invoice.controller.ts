@@ -1,40 +1,42 @@
+/* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { SaleInvoiceService } from '../../services/sale-invoice/sale-invoice.service';
 import { CreateSalesInvoiceDto } from '../../salesinvoice.dto';
-import { CreatePurchaseInvoicDto } from 'src/features/purchase/PurchaseInvoice/dtos/CreatePurchaseInvoiceDto.dto';
+
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('sale-invoice')
+@ApiTags('Sale-invoice')
 @Controller('sale-invoice')
 export class SaleInvoiceController {
 
 
-constructor(private readonly saleInvoiceService : SaleInvoiceService){}
+    constructor(private readonly saleInvoiceService: SaleInvoiceService) { }
 
 
-@Get()
-async findAll(){
-    return await this.saleInvoiceService.findAll()
-}
+    @Get()
+    async findAll() {
+        return await this.saleInvoiceService.findAll()
+    }
 
-@Get('/:id')
-async findById(@Param('id') id:string){
-    return await this.saleInvoiceService.findById(id)
-}
+    @Get('/:invoiceNumber')
+    async findByInvoiceNumber(@Param('invoiceNumber') invoiceNumber: string) {
+        return await this.saleInvoiceService.findByInvoiceNumber(invoiceNumber)
+    }
 
-@Post()
-async createInvoice(@Body() data:CreateSalesInvoiceDto){
-    return await this.saleInvoiceService.createInvoice(data)
-}
+    @Post()
+    async createInvoice(@Body() data: CreateSalesInvoiceDto) {
+        return await this.saleInvoiceService.createInvoice(data)
+    }
 
-@Put('/:id')
-async updateInvoice(@Param('id') id:string, @Body() data:CreateSalesInvoiceDto){
-    return await this.saleInvoiceService.updateInvoice(id, data)
-}
+    @Put('/:invoiceNumber')
+    async updateInvoice(@Param('invoiceNumber') invoiceNumber: string, @Body() data: CreateSalesInvoiceDto) {
+        return await this.saleInvoiceService.updateInvoice(invoiceNumber, data)
+    }
 
-@Delete('/:id')
-async deleteInvoice(@Param('id') id:string){
-    return await this.saleInvoiceService.deleteInvoice(id)
-}
+    @Delete('/:invoiceNumber')
+    async deleteInvoice(@Param('invoiceNumber') invoiceNumber: string) {
+        console.log("Deleting invoice:", invoiceNumber);
+        return await this.saleInvoiceService.deleteInvoice(invoiceNumber)
+    }
 
 }

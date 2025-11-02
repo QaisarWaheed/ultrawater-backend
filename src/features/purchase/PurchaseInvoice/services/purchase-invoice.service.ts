@@ -1,38 +1,38 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { PurchaseInvoice } from '../entities/PurchaseInvoice.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreatePurchaseInvoicDto } from '../dtos/CreatePurchaseInvoiceDto.dto';
+import { CreatePurchaseInvoiceDto } from '../dtos/CreatePurchaseInvoiceDto.dto';
+
 
 @Injectable()
 export class PurchaseInvoiceService {
 
-constructor(@InjectModel('PurchaseInvoice') private readonly purchaseInvoiceModel: Model<PurchaseInvoice>){}
+    constructor(@InjectModel('PurchaseInvoice') private readonly purchaseInvoiceModel: Model<PurchaseInvoice>) { }
 
 
-async findAll():Promise<PurchaseInvoice[]>{
-    return await this.purchaseInvoiceModel.find();
-}
+    async findAll(): Promise<PurchaseInvoice[]> {
+        return await this.purchaseInvoiceModel.find();
+    }
 
-async findById(id:string):Promise<PurchaseInvoice | null>{
+    async findByInvoiceNumber(purchaseInvoiceNumber: string): Promise<PurchaseInvoice | null> {
+        return await this.purchaseInvoiceModel.findOne({ purchaseInvoiceNumber });
+    }
 
-    return await this.purchaseInvoiceModel.findById(id)
+    async createInvoice(data: CreatePurchaseInvoiceDto): Promise<PurchaseInvoice> {
+        return await this.purchaseInvoiceModel.create(data)
+    }
 
-}
-
-async createInvoice(data:CreatePurchaseInvoicDto):Promise<PurchaseInvoice>{
-    return await this.purchaseInvoiceModel.create(data)
-}
-
-async updateInvoice(id:string, data:CreatePurchaseInvoicDto):Promise<PurchaseInvoice | null>
-{
-    return await this.purchaseInvoiceModel.findByIdAndUpdate(id, data, {new:true})
-}
+    async updateInvoice(purchaseInvoiceNumber: string, data: CreatePurchaseInvoiceDto): Promise<PurchaseInvoice | null> {
+        // purchaseInvoiceNumber is stored as a number in the schema
+        return await this.purchaseInvoiceModel.findOneAndUpdate({ purchaseInvoiceNumber }, data, { new: true }).exec();
+    }
 
 
-async deleteInvoice(id:string){
-    return await this.purchaseInvoiceModel.findByIdAndDelete(id)
-}
+    async deleteInvoice(purchaseInvoiceNumber: string) {
+        return await this.purchaseInvoiceModel.findOneAndDelete({ purchaseInvoiceNumber }).exec();
+    }
 
 
 }

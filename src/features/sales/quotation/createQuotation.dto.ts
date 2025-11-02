@@ -1,30 +1,35 @@
+/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import { Product } from 'src/features/products/entities/Product.entity';
 import { Customer } from '../customer/entities/customer.entity';
 
 export class CreateQuotationDto {
-  @ApiProperty({ required: true })
+
+  @ApiProperty()
   quotationDate: Date;
+  @ApiProperty()
+  quotationNumber: string;
 
- 
-
-  @ApiProperty({ required: true })
+  @ApiProperty()
   products: Product[];
 
   @ApiProperty()
-  customer: string;
+  length: string;
+
+  @ApiProperty({ type: [Object], description: 'Array of customer objects' })
+  customer: Customer;
 
   @ApiProperty()
   remarks: string;
 
   subTotal: number;
 
-  totalGrossAmmount: number;
+  totalGrossAmount: number;
 
   totalDiscount: number;
 
-  totalNetAmmount: number;
+  totalNetAmount: number;
 
-  discount:number
+  discount: number
 
 }

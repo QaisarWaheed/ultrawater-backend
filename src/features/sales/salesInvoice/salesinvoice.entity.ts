@@ -1,63 +1,61 @@
+/* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from 'mongoose';
 import { Product } from 'src/features/products/entities/Product.entity';
 import { Customer } from "../customer/entities/customer.entity";
 
-export type paymentMethodType = 'Cash'| 'Card';
+export type paymentMethodType = 'Cash' | 'Card';
 
-@Schema({timestamps:true})
-export class SalesInvoice{
+@Schema({ timestamps: true })
+export class SalesInvoice {
 
     declare _id: mongoose.Types.ObjectId;
 
-    @Prop()
-    invoiveNumber: number;
+    @Prop({ type: String })
+    invoiceNumber: string;
 
-    @Prop()
-    invoiveDate: Date;
+    @Prop({ type: Date })
+    invoiceDate: Date;
 
+    // ✅ Explicit type for union
+    @Prop({ type: String, enum: ['Cash', 'Card'], required: false })
+    paymentMethod: paymentMethodType;
 
-    @Prop()
-    paymentMethod: paymentMethodType
+    // store full product objects inside the invoice so frontend can show product details
+    @Prop({ type: [mongoose.Schema.Types.Mixed], required: false })
+    items: Product[];
 
+    // store full customer object (embedded) so backend receives full customer data
+    @Prop({ type: [mongoose.Schema.Types.Mixed], required: false })
+    customer: Customer[];
 
-   @Prop()
-   products: Product[]
-   
-   @Prop()
-   customerName: string;
-
-    @Prop()
+    @Prop({ type: String })
     remarks: string;
 
+    @Prop({ type: Number })
+    length: number;
 
-    @Prop()
-    length:number
+    @Prop({ type: Number })
+    discount: number;
 
-    @Prop()
-    discount:number
+    @Prop({ type: Number })
+    amount: number;
 
-    @Prop()
-    amount:number
+    @Prop({ type: Number })
+    subTotal: number;
 
-    @Prop()
-    subTotal:number
+    @Prop({ type: Number })
+    totalGrossAmount: number;
 
-    @Prop()
-    totalGrossAmmount:number
+    @Prop({ type: Number })
+    totalDiscount: number;
 
-    @Prop()
-    totalDiscount:number
-
-    @Prop()
-    totalNetAmmount:number
+    @Prop({ type: Number })
+    totalNetAmount: number;
 
     declare createdAt: Date;
-
     declare updatedAt: Date;
-
-    
 }
-const salesInvoiceSchema = SchemaFactory.createForClass(SalesInvoice);
 
+const salesInvoiceSchema = SchemaFactory.createForClass(SalesInvoice);
 export default salesInvoiceSchema;

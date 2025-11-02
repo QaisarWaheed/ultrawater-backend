@@ -2,37 +2,37 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
 import type { paymentMethodType } from "src/features/sales/salesInvoice/salesinvoice.entity";
 
-@Schema({timestamps:true})
-export class RecieptVoucher{
+@Schema({ timestamps: true })
+export class RecieptVoucher {
 
-    declare _id:mongoose.Types.ObjectId
-
-    @Prop()
-    voucherNumber:number
+    declare _id: mongoose.Types.ObjectId
 
     @Prop()
-    date: Date
+    voucherNumber: string
 
     @Prop()
-    recievedFrom:string
+    voucherDate: Date
 
     @Prop()
-    ammount:number
-
-
-    @Prop()
-    referenceNumber:string
+    receivedFrom: string
 
     @Prop()
-    paymentMode:paymentMethodType
+    amount: number
 
 
     @Prop()
-    remarks?:string
+    referenceNumber: string
 
-    declare createdAt:Date
+    @Prop()
+    paymentMode: paymentMethodType
 
-    declare updatedAt:Date
+
+    @Prop()
+    remarks?: string
+
+    declare createdAt: Date
+
+    declare updatedAt: Date
 
 }
 

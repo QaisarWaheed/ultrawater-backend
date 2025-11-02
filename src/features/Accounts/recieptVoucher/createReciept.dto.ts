@@ -2,16 +2,16 @@ import { ApiProperty } from '@nestjs/swagger';
 import type { paymentMethodType } from 'src/features/sales/salesInvoice/salesinvoice.entity';
 
 export class CreateRecipetVoucherDto {
-  voucherNumber: number;
+  voucherNumber: string;
 
   @ApiProperty()
-  date: Date;
+  voucherDate: Date;
 
   @ApiProperty()
-  recievedFrom: string;
+  receivedFrom: string;
 
   @ApiProperty()
-  ammount: number;
+  amount: number;
 
   @ApiProperty()
   referenceNumber: string;

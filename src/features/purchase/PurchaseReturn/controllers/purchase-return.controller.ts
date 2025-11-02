@@ -1,39 +1,40 @@
+/* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
- 
+
 import { PurchaseReturnService } from '../services/purchase-return.service';
 import { CreatePurchaseReturnDto } from '../dtos/CreatePurchaseReturn.dto';
 
-@Controller('purchase-return')
+@Controller('purchase-returns')
 export class PurchaseReturnController {
 
 
-    
-    constructor(private readonly purchaseReturnSchema : PurchaseReturnService){}
-    
-    
+
+    constructor(private readonly purchaseReturnService: PurchaseReturnService) { }
+
+
     @Get()
-    async findAll(){
-        return await this.purchaseReturnSchema.findAll()
+    async findAll() {
+        return await this.purchaseReturnService.findAll()
     }
-    
-    @Get('/:id')
-    async findById(@Param('id') id:string){
-        return await this.purchaseReturnSchema.findById(id)
+
+    @Get('/:returnNumber')
+    async findById(@Param('returnNumber') returnNumber: string) {
+        return await this.purchaseReturnService.findById(returnNumber)
     }
-    
+
     @Post()
-    async createInvoice(@Body() data:CreatePurchaseReturnDto){
-        return await this.purchaseReturnSchema.createInvoice(data)
+    async createInvoice(@Body() data: CreatePurchaseReturnDto) {
+        return await this.purchaseReturnService.createInvoice(data)
     }
-    
-    @Put('/:id')
-    async updateInvoice(@Param('id') id:string, @Body() data:CreatePurchaseReturnDto){
-        return await this.purchaseReturnSchema.updateInvoice(id, data)
+
+    @Put('/:returnNumber')
+    async updateInvoice(@Param('returnNumber') returnNumber: string, @Body() data: CreatePurchaseReturnDto) {
+        return await this.purchaseReturnService.updateInvoice(returnNumber, data)
     }
-    
-    @Delete('/:id')
-    async deleteInvoice(@Param('id') id:string){
-        return await this.deleteInvoice(id)
+
+    @Delete('/:returnNumber')
+    async deleteInvoice(@Param('returnNumber') returnNumber: string) {
+        return await this.purchaseReturnService.deleteInvoice(returnNumber)
     }
-    
+
 }

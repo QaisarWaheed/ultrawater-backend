@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { ApiProperty } from "@nestjs/swagger";
 import mongoose, { mongo } from "mongoose";
@@ -8,28 +9,28 @@ export class Expense {
 
     declare _id: mongoose.Types.ObjectId;
 
-    @Prop({ required: true })
+    @Prop()
     expenseNumber: string;
 
-    @Prop({ required: true })
+    @Prop()
     date: Date;
 
-    @Prop({ required: true })
+    @Prop()
     description: string;
 
-    @Prop({ required: true })
+    @Prop()
     amount: number;
 
-    @Prop({ required: true })
+    @Prop()
     paymentMethod: paymentMethodType;
 
-    @Prop({ required: true })
+    @Prop()
     reference: string;
 
-    @Prop({ required: true })
+    @Prop()
     remarks: string;
 
-    @Prop({ required: true })
+    @Prop()
     categoryType: string;
 
     declare createdAt: Date;

@@ -1,17 +1,17 @@
+/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import { Supplier } from '../../supplier/supplier.entity';
 import { Product } from 'src/features/products/entities/Product.entity';
 
-export class CreatePurchaseInvoicDto {
-  invoiceNumber: number;
+export class CreatePurchaseInvoiceDto {
+  purchaseInvoiceNumber: string;
 
   @ApiProperty()
   invoiceDate: Date;
 
-  @ApiProperty()
-  grnNumber?: number;
 
-  @ApiProperty()
+
+  @ApiProperty({ type: Object })
   supplier: Supplier;
 
   @ApiProperty()
@@ -23,9 +23,24 @@ export class CreatePurchaseInvoicDto {
   @ApiProperty()
   subTotal: number;
 
-  @ApiProperty()
-  discount: number;
+
 
   @ApiProperty()
-  total: number;
+  total: number
+
+  @ApiProperty()
+  totalDiscount: number
+
+  @ApiProperty()
+  discount: number
+  @ApiProperty()
+  totalNetAmount: number
+
+  @ApiProperty()
+  length: number
+
+
+
+
+
 }

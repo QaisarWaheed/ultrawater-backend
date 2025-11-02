@@ -6,11 +6,11 @@ import { RecieptVoucherService } from './services/reciept-voucher.service';
 
 @Module({
 
-imports:[MongooseModule.forFeature([{name:'RecieptVoucher', schema:recieptVoucherSchema}])],
-controllers:[RecieptVoucherController],
-providers:[RecieptVoucherService]
+    imports: [MongooseModule.forFeature([{ name: 'RecieptVoucher', schema: recieptVoucherSchema }])],
+    controllers: [RecieptVoucherController],
+    providers: [RecieptVoucherService]
 
 
 
 })
-export class RecieptVoucher {}
+export class RecieptVoucher { }

@@ -1,44 +1,40 @@
+/* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Product } from "src/features/products/entities/Product.entity";
 import { Supplier } from "../../supplier/supplier.entity";
 import mongoose from "mongoose";
 
-@Schema({timestamps:true})
-export class PurchaseReturn{
+@Schema({ timestamps: true })
+export class PurchaseReturn {
 
 
-declare _id: mongoose.Types.ObjectId
+    declare _id: mongoose.Types.ObjectId
 
-@Prop()
-returnNumber:number
+    @Prop()
+    returnNumber: string
 
-@Prop()
-returnDate: Date
+    @Prop()
+    returnDate: Date
 
- 
+    @Prop()
+    supplier: Supplier[]
 
-@Prop()
-supplier: Supplier
-
- @Prop()
- products : Product[]
+    @Prop()
+    products: Product[]
 
 
- @Prop()
- reason:string
+    @Prop()
+    reason: string
 
- @Prop()
- subTotal:number
+    @Prop()
+    subTotal: number
 
- @Prop()
- discount:number
+    @Prop()
+    total: number
 
- @Prop()
- total:number
+    declare createAt: Date
 
- declare createAt:Date
-
- declare updatedAt: Date
+    declare updatedAt: Date
 
 
 }

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Product } from '../entities/Product.entity';
@@ -9,19 +10,21 @@ import mongoose from 'mongoose';
 export class ProductService {
   constructor(
     @InjectModel('Product') private readonly productModel: Model<Product>,
-  ) {}
+  ) { }
 
   async findAll(): Promise<Product[]> {
     try {
-      return await this.productModel.find().exec();
+      const products = await this.productModel.find().exec();
+      console.log('Products from DB:', products);
+      return products;
     } catch (error) {
       throw new Error('Error fetching products');
     }
   }
 
-  async findById(id: string): Promise<Product | null> {
+  async findById(_id: string): Promise<Product | null> {
     try {
-      const product = await this.productModel.findById(id).exec();
+      const product = await this.productModel.findById(_id).exec();
       if (!product) {
         throw new HttpException('No Product Found Against this Id', 404);
       }
@@ -42,19 +45,20 @@ export class ProductService {
   }
 
   async updateProduct(
-    id: string,
+    _id: string,
     product: Partial<CreateProductDto>,
   ): Promise<Product | null> {
     try {
       return await this.productModel
-        .findByIdAndUpdate(id, product, { new: true })
+        .findByIdAndUpdate(_id, product, { new: true })
         .exec();
+
     } catch (error) {
       throw new Error('Error updating product');
     }
   }
 
-  async deleteProduct(id: string): Promise<Product | null> {
-    return await this.productModel.findByIdAndDelete(id).exec();
+  async deleteProduct(_id: string): Promise<Product | null> {
+    return await this.productModel.findByIdAndDelete(_id).exec();
   }
 }

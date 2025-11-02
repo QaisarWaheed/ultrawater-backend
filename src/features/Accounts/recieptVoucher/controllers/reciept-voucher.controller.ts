@@ -5,33 +5,33 @@ import { CreateRecipetVoucherDto } from '../createReciept.dto';
 @Controller('reciept-voucher')
 export class RecieptVoucherController {
 
-constructor(private readonly recieptVoucher: RecieptVoucherService) {}
+  constructor(private readonly recieptVoucher: RecieptVoucherService) { }
 
 
-@Get('/getAll')
-async getAllProducts() {
+  @Get()
+  async getAllReceiptVouchers() {
     return this.recieptVoucher.findAll();
   }
 
   @Get('/:id')
-  async getProductById(@Param('id') id: string) {
+  async getReceiptVoucherById(@Param('id') id: string) {
     return this.recieptVoucher.findById(id);
   }
 
-@Post()  
-    async createProduct(@Body() data: CreateRecipetVoucherDto) {
-    return this.recieptVoucher.addProduct(data);
+  @Post()
+  async createReceiptVoucher(@Body() data: CreateRecipetVoucherDto) {
+    return this.recieptVoucher.addReceiptVoucher(data);
   }
 
-  
+
   @Put('/:id')
-  async updateProduct(@Param('id') id: string, @Body() data: any) {
-    return this.recieptVoucher.updateProduct(id, data);
+  async updateReceiptVoucher(@Param('id') id: string, @Body() data: any) {
+    return this.recieptVoucher.updateReceiptVoucher(id, data);
   }
 
-    @Delete('/:id')
-    async deleteProduct(@Param('id') id: string) {
-    return this.recieptVoucher.deleteProduct(id);
+  @Delete('/:id')
+  async deleteReceiptVoucher(@Param('id') id: string) {
+    return this.recieptVoucher.deleteReceiptVoucher(id);
   }
 
 

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Product } from 'src/features/products/entities/Product.entity';
@@ -8,18 +9,16 @@ export type paymentMethodType = 'Cash' | 'Card' | 'Cheque' | 'Credit';
 @Schema({ timestamps: true })
 export class Quotation {
   declare _id: mongoose.Types.ObjectId;
-
-
-  @Prop({ required: true })
-  quotationDate: Date;
-
- 
-
-  @Prop({ required: true })
-  products: Product[];
+  @Prop()
+  quotationNumber: string;
 
   @Prop()
-  customer: string;
+  quotationDate: Date;
+  @Prop()
+  products: Product[];
+
+  @Prop({ type: [mongoose.Schema.Types.Mixed], required: false })
+  customer: Customer[];
 
   @Prop()
   remarks: string;
@@ -40,7 +39,7 @@ export class Quotation {
   totalNetAmmount: number;
 
   @Prop()
-  length:string
+  length: string;
 
   declare createdAt: Date;
 

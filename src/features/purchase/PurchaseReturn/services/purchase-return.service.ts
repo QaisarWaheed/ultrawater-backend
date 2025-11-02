@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PurchaseReturn } from '../entities/PurchaseReturn.entity';
@@ -9,34 +10,33 @@ export class PurchaseReturnService {
 
 
 
-constructor(@InjectModel('PurchaseReturn') private readonly purchaseReturnModel: Model<PurchaseReturn>){}
+    constructor(@InjectModel('PurchaseReturn') private readonly purchaseReturnModel: Model<PurchaseReturn>) { }
 
 
-async findAll():Promise<PurchaseReturn[]>{
-    return await this.purchaseReturnModel.find();
-}
+    async findAll(): Promise<PurchaseReturn[]> {
+        return await this.purchaseReturnModel.find();
+    }
 
-async findById(id:string):Promise<PurchaseReturn | null>{
+    async findById(id: string): Promise<PurchaseReturn | null> {
 
-    return await this.purchaseReturnModel.findById(id)
+        return await this.purchaseReturnModel.findById(id)
 
-}
+    }
 
-async createInvoice(data:CreatePurchaseReturnDto):Promise<PurchaseReturn>{
-    return await this.purchaseReturnModel.create(data)
-}
+    async createInvoice(data: CreatePurchaseReturnDto): Promise<PurchaseReturn> {
+        return await this.purchaseReturnModel.create(data)
+    }
 
-async updateInvoice(id:string, data:CreatePurchaseReturnDto):Promise<PurchaseReturn | null>
-{
-    return await this.purchaseReturnModel.findByIdAndUpdate(id, data, {new:true})
-}
-
-
-async deleteInvoice(id:string){
-    return await this.purchaseReturnModel.findByIdAndDelete(id)
-}
+    async updateInvoice(returnNumber: string, data: CreatePurchaseReturnDto): Promise<PurchaseReturn | null> {
+        return await this.purchaseReturnModel.findOneAndUpdate({ returnNumber }, data, { new: true })
+    }
 
 
+    async deleteInvoice(returnNumber: string) {
+        return await this.purchaseReturnModel.findOneAndDelete({ returnNumber })
+    }
 
-    
+
+
+
 }

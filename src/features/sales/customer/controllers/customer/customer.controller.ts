@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 
 import { ApiTags } from '@nestjs/swagger';
@@ -7,7 +8,7 @@ import { CustomerService } from '../../services/customer/customer.service';
 @ApiTags('Customers')
 @Controller('customers')
 export class CustomerController {
-  constructor(private readonly customerService: CustomerService) {}
+  constructor(private readonly customerService: CustomerService) { }
 
   @Get()
   getAll() {
