@@ -56,6 +56,11 @@ export class Product {
   @Prop()
   description: string;
 
+
+  @ApiProperty()
+  @Prop()
+  supplier: string;
+
   declare createdAt: Date;
 
   declare updatedAt: Date;

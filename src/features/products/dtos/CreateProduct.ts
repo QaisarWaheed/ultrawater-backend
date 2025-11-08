@@ -32,4 +32,8 @@ export class CreateProductDto {
 
   @ApiProperty()
   description: string;
+
+
+  @ApiProperty()
+  supplier: string;
 }
