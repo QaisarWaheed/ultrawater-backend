@@ -59,7 +59,7 @@ export class Product {
 
   @ApiProperty()
   @Prop()
-  supplier: string;
+  brand: string;
 
   declare createdAt: Date;
 

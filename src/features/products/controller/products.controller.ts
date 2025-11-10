@@ -9,9 +9,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { ProductService } from '../services/product.service';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateProductDto } from '../dtos/CreateProduct';
-import mongoose from 'mongoose';
 
 @ApiTags('Products')
 @Controller('products')
@@ -32,6 +31,7 @@ export class ProductsController {
 
   @Post()
   async createProduct(@Body() productData: CreateProductDto) {
+    console.log("Creating product with data:", productData);
     return this.productService.addProduct(productData);
   }
 
